@@ -2,6 +2,10 @@ import firebase from '../firebase'
 import {useState} from 'react'
 import {useRouter} from 'next/router'
 import LoginRegisterForm from '../component/LoginRegisterForm'
+import {  toast } from 'react-toastify';
+import {Button} from 'antd'
+import {GoogleOutlined} from '@ant-design/icons'
+
 
 const Login = () => {
 
@@ -24,6 +28,7 @@ const Login = () => {
         })
         .catch((err)=>{
             console.log(err)
+            toast.error(err.message)
         })
 
 
@@ -37,13 +42,38 @@ const Login = () => {
         })
         .catch((err)=>{
             console.log(err)
+            toast.error(err.message)
         })
+    }
+
+    const googleLogin = async () => {
+            await firebase.auth().signInWithPopup(new firebase.auth.GoogleAuthProvider())
+            .then((user)=>{
+                console.log('login',user)
+            })
+            .catch((err)=>{
+                console.log(err)
+                toast.error(err.message)
+            })  
     }
 
     return ( 
         <div className="container">
 
                 <h2 className="text-center pt-4">Login/Register</h2>
+
+
+                <Button
+                    onClick={googleLogin}
+                    className="md-3"
+                    type="danger"
+                    shape="round"
+                    icon={<GoogleOutlined/>}
+                    block
+                    >
+                        Login with google
+                    </Button>
+
 
                 <div className="row">
                     <LoginRegisterForm
