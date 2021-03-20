@@ -7,6 +7,7 @@ import {Button} from 'antd'
 import {GoogleOutlined} from '@ant-design/icons'
 
 
+
 const Login = () => {
 
     const [loginEmail,setLoginEmail] = useState('')
@@ -25,6 +26,7 @@ const Login = () => {
         await firebase.auth().createUserWithEmailAndPassword(registerEmail,registerPass)
         .then((user)=> {
             console.log('register',user)
+            router.push('/')
         })
         .catch((err)=>{
             console.log(err)
@@ -39,6 +41,7 @@ const Login = () => {
         await firebase.auth().signInWithEmailAndPassword(loginEmail,loginPass)
         .then((user)=>{
             console.log('login',user)
+            router.push('/')
         })
         .catch((err)=>{
             console.log(err)

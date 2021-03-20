@@ -1,7 +1,9 @@
 import {useEffect,useContext} from 'react';
 import firebase from '../firebase'
 import {Context} from '../context'
-import axios from 'axios'
+import {axiosAuth} from '../actions/axios'
+import {setCookie,destroyCookie} from 'nookies'
+
 const FirebaseAuthState = ({children}) => {
 
     const {dispatch} = useContext(Context)
@@ -13,34 +15,33 @@ const FirebaseAuthState = ({children}) => {
                 dispatch({
                     type: "LOGOUT"
                 })
+
+
+                destroyCookie(null,"token")
+                setCookie(null,"token",token,{})
             }else{
                 const {token} = await user.getIdTokenResult()
-                console.log('token',token)
-               // dispatch({
-                 //   type: "LOGIN",
-                   // payload: user,
-               // })
 
-               axios.post('http://localhost:5000/api/current-user',{},{
-                   headers:{
-                       token,
-
-                   },
-                 }
-               )
+                destroyCookie(null,"token")
+                setCookie(null,"token",token,{})
+//console.log('token',token)
+               /* dispatch({
+                    type: "LOGIN",
+                    payload: user,
+                })
+*/
+               axiosAuth.post('/current-user',{})
                .then(res => {
-                   console.log('resss===',res)
-
-                   /*
+                  
+                    const {data} = res
+                    console.log('sssss',data)
                    dispatch({
-                       type: 'LOGIN',
-                       payload: res.data
+                       type: "LOGIN",
+                       payload:  data
                    })
-                   */
+                   
                })
-               .catch((err)=> {
-                   console.log(err)
-               })
+              
             }
         })
 

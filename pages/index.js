@@ -7,7 +7,7 @@ const Home = () => {
 
     return ( 
         <div>
-            <p>hola desde home</p>
+            <p>hola desde home  sss</p>
             {JSON.stringify(state)}
         </div>
      );
